@@ -2,6 +2,7 @@
 
 import base64
 import contextlib
+import errno
 import importlib.util
 import io
 import json
@@ -107,6 +108,53 @@ class GenerateTests(unittest.TestCase):
         self.run_script("router", "--force")
         self.assertEqual((self.output / "router.png").read_bytes(), PNG)
         self.assertEqual(len(self.requests), 1)
+
+    def test_write_failure_preserves_existing_image_and_removes_partial_output(self):
+        self.output.mkdir()
+        destination = self.output / "router.png"
+        original_open = Path.open
+
+        @contextlib.contextmanager
+        def failing_open(path, mode="r", *args, **kwargs):
+            with original_open(path, mode, *args, **kwargs) as stream:
+                if mode in ("wb", "xb"):
+                    stream.write(b"partial")
+                    raise OSError(errno.ENOSPC, "No space left on device")
+                yield stream
+
+        for force in (True, False):
+            with self.subTest(force=force):
+                destination.unlink(missing_ok=True)
+                if force:
+                    destination.write_bytes(b"keep")
+                arguments = ["router", "--force"] if force else ["router"]
+                with (
+                    patch.object(Path, "open", failing_open),
+                    self.assertRaises(SystemExit) as error,
+                ):
+                    self.run_script(*arguments)
+                self.assertEqual(error.exception.code, 1)
+                if force:
+                    self.assertEqual(destination.read_bytes(), b"keep")
+                    destination.unlink()
+                self.assertEqual(list(self.output.iterdir()), [])
+
+    def test_concurrent_output_is_not_overwritten_without_force(self):
+        destination = self.output / "router.png"
+        validate = generate.png_bytes
+
+        def concurrent_save(response):
+            destination.write_bytes(b"another run")
+            return validate(response)
+
+        with (
+            patch.object(generate, "png_bytes", side_effect=concurrent_save),
+            self.assertRaises(SystemExit) as error,
+        ):
+            self.run_script("router")
+        self.assertEqual(error.exception.code, 1)
+        self.assertEqual(destination.read_bytes(), b"another run")
+        self.assertEqual(list(self.output.iterdir()), [destination])
 
     def test_failed_responses_preserve_existing_output(self):
         self.output.mkdir()

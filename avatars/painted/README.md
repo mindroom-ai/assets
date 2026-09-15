@@ -76,7 +76,7 @@ Set `OPENAI_API_KEY` in your environment, or set `OPENAI_API_KEY_FILE` to a file
 
 Omit the names to generate the whole set. Results go into the ignored `avatars/painted/generated/` directory; use `--output-dir` to choose another directory. Existing output files are skipped unless you pass `--force`. Use `--model` to select a different model or pin a snapshot. Review the new images before copying selected files into `agents/`.
 
-The script sends each full saved prompt verbatim with `reference.png`, generates each avatar separately, and validates the returned PNG before writing it. An error stops the run with a nonzero exit status; completed files remain available and are skipped on the next run.
+The script sends each full saved prompt verbatim with `reference.png`, generates each avatar separately, and validates the returned PNG before saving it atomically. Failed writes preserve existing images and leave no partial avatar to skip on a later run. An error stops the run with a nonzero exit status; completed files remain available and are skipped on the next run.
 
 Run the offline tests without API credentials:
 

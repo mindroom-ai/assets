@@ -10,6 +10,7 @@ import io
 import json
 import os
 import re
+import tempfile
 from pathlib import Path
 
 from openai import OpenAI, OpenAIError
@@ -58,6 +59,20 @@ def png_bytes(response):
             raise ValueError("OpenAI returned an image that is not a square PNG")
         image.verify()
     return data
+
+
+def save_png(destination, data, force):
+    """Publish only a complete file, preserving existing output on failure."""
+    with tempfile.TemporaryDirectory(
+        dir=destination.parent, prefix=".avatar-"
+    ) as directory:
+        temporary = Path(directory) / destination.name
+        temporary.write_bytes(data)
+        if force:
+            temporary.replace(destination)
+        else:
+            # A hard link publishes the complete file without replacing a concurrent output.
+            os.link(temporary, destination)
 
 
 def main(argv=None):
@@ -118,8 +133,7 @@ def main(argv=None):
                         output_format="png",
                     )
                 data = png_bytes(response)
-                with destination.open("wb" if args.force else "xb") as output:
-                    output.write(data)
+                save_png(destination, data, args.force)
                 print(f"Saved {destination}", flush=True)
     except (OSError, ValueError, KeyError, TypeError, OpenAIError) as error:
         parser.exit(1, f"error: {error}\n")
