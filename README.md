@@ -9,4 +9,4 @@ https://github.com/user-attachments/assets/1f121c89-5418-4f42-bdfe-fb9de0fecd03
 
 ## Stock agent avatars
 
-[Browse 22 painted avatars](avatars/painted/README.md) for Router, Mind, helpers, computers, coding, research, writing, planning, and other common agent roles. The collection includes PNGs, a visual catalog, and generation prompts.
+[Browse 23 painted avatars](avatars/painted/README.md) for Router, Mind, helpers, computers, coding, research, writing, planning, and other common agent roles. The collection includes PNGs, a visual catalog, and generation prompts.
