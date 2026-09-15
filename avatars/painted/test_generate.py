@@ -156,6 +156,25 @@ class GenerateTests(unittest.TestCase):
         self.assertEqual(destination.read_bytes(), b"another run")
         self.assertEqual(list(self.output.iterdir()), [destination])
 
+    def test_unsupported_output_filesystem_fails_before_paid_request(self):
+        with (
+            patch.object(
+                os, "link", side_effect=OSError(errno.ENOTSUP, "Not supported")
+            ),
+            self.assertRaises(SystemExit) as error,
+        ):
+            self.run_script("router")
+        self.assertEqual(error.exception.code, 1)
+        self.assertEqual(self.requests, [])
+        self.assertEqual(list(self.output.iterdir()), [])
+
+    def test_force_does_not_require_hard_links(self):
+        with patch.object(
+            os, "link", side_effect=OSError(errno.ENOTSUP, "Not supported")
+        ):
+            self.run_script("router", "--force")
+        self.assertEqual((self.output / "router.png").read_bytes(), PNG)
+
     def test_failed_responses_preserve_existing_output(self):
         self.output.mkdir()
         destination = self.output / "router.png"

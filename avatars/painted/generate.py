@@ -121,6 +121,19 @@ def main(argv=None):
 
         with OpenAI(api_key=api_key(), timeout=600.0) as client:
             args.output_dir.mkdir(parents=True, exist_ok=True)
+            if not args.force:
+                with tempfile.TemporaryDirectory(
+                    dir=args.output_dir, prefix=".avatar-"
+                ) as directory:
+                    probe = Path(directory) / "probe"
+                    probe.touch()
+                    try:
+                        os.link(probe, probe.with_suffix(".link"))
+                    except OSError as error:
+                        raise ValueError(
+                            "Output directory does not permit hard links; choose another directory "
+                            "or use --force (replaces existing output)"
+                        ) from error
             for name, destination in pending:
                 print(f"Generating {name} with {args.model}...", flush=True)
                 with reference.open("rb") as image:
