@@ -56,4 +56,31 @@ For a MindRoom setup that uses the standard `avatars/agents/` directory, copy th
 
 The set was generated with OpenAI's built-in image generation tool. [prompts.json](prompts.json) records each role, subject, background color, and full prompt. [reference.png](reference.png) is the MindRoom painting reference supplied with every request.
 
-To add an avatar, make one image generation request with that reference and a prompt following the same structure. Use one clear object, broad shapes, a contrasting background, and enough margin for a circular crop. Inspect the result at 40 and 80 pixels before selecting it. Regeneration can match the style but will not reproduce identical pixels.
+To add an avatar, add an entry to the prompt catalog following the same structure. Use one clear object, broad shapes, a contrasting background, and enough margin for a circular crop. Inspect the result at 40 and 80 pixels before selecting it. Regeneration can match the style but will not reproduce identical pixels.
+
+## Regenerate avatars
+
+[generate.py](generate.py) reads the saved prompts and supplies the painting reference with every request to the [OpenAI image editing API](https://developers.openai.com/api/docs/guides/image-generation). It defaults to [GPT Image 2.5 Sunburst](https://developers.openai.com/api/docs/models/gpt-image-2.5-sunburst), high quality, and 1024×1024 PNG output. The original collection was generated with the built-in image tool; this script provides an API-based way to generate new versions.
+
+Install [uv](https://docs.astral.sh/uv/getting-started/installation/), then run these commands from the repository root. `uv` installs the script's dependencies automatically.
+
+```sh
+# Preview the full set without an API key, requests, or file writes.
+uv run avatars/painted/generate.py --dry-run
+
+# Generate two avatars after setting your API credential.
+uv run avatars/painted/generate.py router mind
+```
+
+Set `OPENAI_API_KEY` in your environment, or set `OPENAI_API_KEY_FILE` to a file containing the key. Generation makes paid OpenAI API requests and requires access to the selected model.
+
+Omit the names to generate the whole set. Results go into the ignored `avatars/painted/generated/` directory; use `--output-dir` to choose another directory. Existing output files are skipped unless you pass `--force`. Use `--model` to select a different model or pin a snapshot. Review the new images before copying selected files into `agents/`.
+
+The script sends each full saved prompt verbatim with `reference.png`, generates each avatar separately, and validates the returned PNG before writing it. An error stops the run with a nonzero exit status; completed files remain available and are skipped on the next run.
+
+Run the offline tests without API credentials:
+
+```sh
+uv run --with 'openai>=2.54,<3' --with 'pillow>=11,<13' \
+  python -m unittest discover -s avatars/painted -p test_generate.py -v
+```
