@@ -1,5 +1,9 @@
 # Painted agent avatars
 
+<p align="center">
+  <a href="reference.png"><img src="reference.png" alt="MindRoom painted logo" width="240" /></a>
+</p>
+
 22 stock avatars for common assistant roles. Each uses a recognizable object, a distinct background color, and a warm painted texture. Choose any image for any agent; the suggested roles are starting points.
 
 ## Gallery
