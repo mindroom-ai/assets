@@ -4,7 +4,7 @@
   <a href="reference.png"><img src="reference.png" alt="MindRoom painted logo" width="240" /></a>
 </p>
 
-23 stock avatars for common assistant roles. Each uses a recognizable object or mark, a distinct background color, and a warm painted texture. Choose any image for any agent; the suggested roles are starting points.
+24 stock avatars for common assistant roles. Each uses a recognizable object or mark, a distinct background color, and a warm painted texture. Choose any image for any agent; the suggested roles are starting points.
 
 ## Gallery
 
@@ -17,7 +17,7 @@ Click an image to open its PNG.
 | [<img src="agents/phone.png" width="112" height="112" alt="Calls avatar" />](agents/phone.png)<br>**Calls** | [<img src="agents/data.png" width="112" height="112" alt="Data avatar" />](agents/data.png)<br>**Data** | [<img src="agents/email.png" width="112" height="112" alt="Email avatar" />](agents/email.png)<br>**Email** | [<img src="agents/finance.png" width="112" height="112" alt="Finance avatar" />](agents/finance.png)<br>**Finance** |
 | [<img src="agents/home.png" width="112" height="112" alt="Home avatar" />](agents/home.png)<br>**Home** | [<img src="agents/news.png" width="112" height="112" alt="News avatar" />](agents/news.png)<br>**News** | [<img src="agents/security.png" width="112" height="112" alt="Security avatar" />](agents/security.png)<br>**Security** | [<img src="agents/shell.png" width="112" height="112" alt="Shell avatar" />](agents/shell.png)<br>**Shell** |
 | [<img src="agents/storyteller.png" width="112" height="112" alt="Storytelling avatar" />](agents/storyteller.png)<br>**Storytelling** | [<img src="agents/writer.png" width="112" height="112" alt="Writing avatar" />](agents/writer.png)<br>**Writing** | [<img src="agents/planner.png" width="112" height="112" alt="Planning avatar" />](agents/planner.png)<br>**Planning** | [<img src="agents/builder.png" width="112" height="112" alt="Agent building avatar" />](agents/builder.png)<br>**Agent building** |
-| [<img src="agents/router.png" width="112" height="112" alt="Router avatar" />](agents/router.png)<br>**Router** | [<img src="agents/mind.png" width="112" height="112" alt="Mind avatar" />](agents/mind.png)<br>**Mind** | [<img src="agents/mind-logo.png" width="112" height="112" alt="Mind logo alternative avatar" />](agents/mind-logo.png)<br>**Mind (logo)** | |
+| [<img src="agents/router.png" width="112" height="112" alt="Router avatar" />](agents/router.png)<br>**Router** | [<img src="agents/mind.png" width="112" height="112" alt="Mind avatar" />](agents/mind.png)<br>**Mind** | [<img src="agents/mind-logo.png" width="112" height="112" alt="Mind logo alternative avatar" />](agents/mind-logo.png)<br>**Mind (logo)** | [<img src="agents/dev.png" width="112" height="112" alt="Development avatar" />](agents/dev.png)<br>**Development** |
 
 ## Files and suggested roles
 
@@ -46,6 +46,7 @@ Click an image to open its PNG.
 | [`router.png`](agents/router.png) | Routes each request to the most suitable agent. |
 | [`mind.png`](agents/mind.png) | Acts as the main thinking companion and personal assistant. |
 | [`mind-logo.png`](agents/mind-logo.png) | An alternative for the main companion, using the painted MindRoom logo. |
+| [`dev.png`](agents/dev.png) | Develops, debugs, and ships software changes. |
 
 ## Use
 
